@@ -11,7 +11,7 @@
 #define MAX_POINTS 100
 
 #define LINE_THICKNESS 2.5
-#define CIRCLE_RADIUS 10
+#define CIRCLE_RADIUS 5
 
 Vector2 points_to_delete[MAX_POINTS] = {0};
 int points_to_delete_count = 0;
@@ -93,7 +93,6 @@ void solve_hull(Vector2 *points, int count, Vector2 min_x, Vector2 max_x)
   if (side_points_count == 0) {
     DrawLineEx(min_x, max_x, LINE_THICKNESS, LIGHTGRAY);
     points_to_delete[points_to_delete_count++] = min_x;
-    points_to_delete[points_to_delete_count++] = max_x;
   } else {
     Vector2 p_most_distant = most_distant_vector_to_line(side_points, side_points_count, min_x, max_x);
 
@@ -112,8 +111,10 @@ void delete_vector_from_array(Vector2 *points, int *count, Vector2 v)
   int i = 0;
   while (! vectors_are_equal(points[i], v)) i++;
 
-  for (int k = i; k < *count - 1; k++) {
-    points[k] = points[k + 1];
+  if (i != *count) {
+    for (int k = i; k < *count - 1; k++) {
+      points[k] = points[k + 1];
+    }
   }
   (*count)--;
 }
@@ -133,15 +134,16 @@ void draw_hull(Vector2 *points, int count)
   solve_hull(temp_points, temp_count, min_x, max_x);
   solve_hull(temp_points, temp_count, max_x, min_x);
 
-  // for (int i = 0; i < temp_count; i++) {
-  //   delete_vector_from_array(temp_points, &temp_count, points_to_delete[i]);
-  // }
+  for (int i = 0; i < points_to_delete_count; i++) {
+    delete_vector_from_array(temp_points, &temp_count, points_to_delete[i]);
+  }
+
   points_to_delete_count = 0;
   memset(points_to_delete, 0, sizeof(points_to_delete));
-  //
-  // if (temp_count >= 2) {
-  //   draw_hull(temp_points, temp_count);
-  // }
+
+  if (temp_count >= 2) {
+    draw_hull(temp_points, temp_count);
+  }
 }
 
 int main(void)
