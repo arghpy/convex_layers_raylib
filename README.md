@@ -3,14 +3,36 @@
 [![Super-Linter](https://github.com/arghpy/convex_layers_raylib/actions/workflows/manage_pull_requests.yaml/badge.svg)](https://github.com/marketplace/actions/super-linter)
 
 Compute convex hull.
-Reference: https://en.wikipedia.org/wiki/Quickhull.
+
+Reference: [Quickhull](https://en.wikipedia.org/wiki/Quickhull).
+
+![Convex Hull](./convex_hull.jpg)
 
 ## Getting Started
 
+Run:
+```console
+./build.sh
+```
+
 ### Prerequisites
 
-### Installation
+Make sure prerequisites from raylib are met ().
 
 ## Usage
 
-## Roadmap
+Run the application:
+
+```console
+./convex_hull
+```
+
+### Controls
+
+Mouse left button: add points.
+
+Mouse right button: move points.
+
+`Reset` button: reset the added points.
+
+`Compute layers` button: draw convex hull of points.
