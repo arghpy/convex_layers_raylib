@@ -43,7 +43,7 @@ jobs:
             DRY_RUN=""
           fi
 
-          CMD="npx semantic-release@25 " \
+          CMD="npx semantic-release@25 "\
           "--branches ${{ steps.branch-names.outputs.default_branch }} "\
           "${DRY_RUN}"
 
