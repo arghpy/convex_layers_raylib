@@ -6,9 +6,6 @@ Compute convex hull.
 
 Reference: [Quickhull](https://en.wikipedia.org/wiki/Quickhull).
 
-
-
-
 ![Convex Hull](./convex_hull.jpg)
 
 ## Getting Started
