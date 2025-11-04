@@ -1,0 +1,50 @@
+name: "Semantic Release"
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        type: boolean
+        description: Get a preview of the release
+        required: true
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ${{ vars.RUNNER }}
+
+    steps:
+      - name: Get branch names
+        id: branch-names
+        uses: tj-actions/branch-names@5250492686b253f06fa55861556d1027b067aeb5 # v9.0.2
+
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up nodejs
+        uses: actions/setup-node@v6
+        with:
+          node-version: latest
+
+      - name: Generate release
+        env:
+          DRY_RUN: ${{ inputs.dry-run }}
+        run: |
+          DRY_RUN="${{ env.DRY_RUN }}"
+          if [[ "${DRY_RUN}" == "true" ]]; then
+            DRY_RUN="--dry-run"
+          else
+            DRY_RUN=""
+          fi
+
+          CMD="npx semantic-release@25 " \
+          "--branches ${{ steps.branch-names.outputs.default_branch }} "\
+          "${DRY_RUN}"
+
+          eval "${CMD}"
