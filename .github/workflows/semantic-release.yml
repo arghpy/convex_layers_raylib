@@ -19,7 +19,7 @@ jobs:
       pull-requests: write
 
     name: Create a release
-    uses: arghpy/shared-workflows/.github/workflows/semantic-release.yml@semantic_release
+    uses: arghpy/shared-workflows/.github/workflows/semantic-release.yml@main
     secrets: inherit
     with:
       runner: ${{ vars.RUNNER }}
