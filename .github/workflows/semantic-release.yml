@@ -3,7 +3,7 @@ name: "Semantic Release"
 on:
   workflow_dispatch:
     inputs:
-      dry_run:
+      dry-run:
         type: boolean
         description: Get a preview of the release
         required: true
@@ -19,8 +19,8 @@ jobs:
       pull-requests: write
 
     name: Create a release
-    uses: arghpy/shared-workflows/.github/workflows/manage_pull_requests.yaml@semantic_release
+    uses: arghpy/shared-workflows/.github/workflows/semantic-release.yml@semantic_release
     secrets: inherit
     with:
       runner: ${{ vars.RUNNER }}
-      dry_run: ${{ inputs.dry_run }}
+      dry-run: ${{ inputs.dry-run }}
