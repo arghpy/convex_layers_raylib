@@ -1,0 +1,3 @@
+[submodule "thirdparty/utils.h"]
+	path = thirdparty/utils.h
+	url = https://github.com:arghpy/utils.h.git
