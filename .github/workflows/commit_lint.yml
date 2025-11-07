@@ -4,6 +4,8 @@ on:
   pull_request:
     types:
       - synchronize
+      - opened
+      - reopened
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
