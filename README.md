@@ -13,12 +13,13 @@ Reference: [Quickhull](https://en.wikipedia.org/wiki/Quickhull).
 
 Run:
 ```console
-./build.sh
+make
 ```
 
 ### Prerequisites
 
-Make sure prerequisites from raylib are met ().
+Make sure prerequisites from raylib are met.
+Install make.
 
 ## Usage
 
