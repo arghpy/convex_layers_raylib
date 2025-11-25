@@ -1,7 +1,7 @@
 #include <string.h>
 #include <math.h>
-#include <raylib.h>
-#include <utils.h>
+#include "raylib.h"
+#include "utils.h"
 
 #define SCREEN_WIDTH  800
 #define SCREEN_HEIGHT 600
