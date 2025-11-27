@@ -1,13 +1,10 @@
 #include <string.h>
+#include <stdio.h>
 #include <math.h>
 #include "raylib.h"
 #include "utils.h"
 
-#define SCREEN_WIDTH  800
-#define SCREEN_HEIGHT 600
-#define FPS 60
-
-#define BACKGROUND_COLOR ((Color) {24, 24, 24, 255}) // 0x18_18_18_FF
+#define BACKGROUND_COLOR ((Color) {18, 18, 18, 0xFF}) // 0x18_18_18_FF
 
 #define LINE_THICKNESS 5
 #define CIRCLE_RADIUS 10
@@ -139,34 +136,46 @@ void draw_hull(Points *points)
 
 int main(void)
 {
+  int SCREEN_WIDTH = 800;
+  int SCREEN_HEIGHT = 600;
 
-  int font_size = 20;
-
-  Rectangle button_compute = {
-    .x = 0,
-    .y = SCREEN_HEIGHT - font_size * 2,
-    .width = 180,
-    .height = font_size * 2
-  };
   char *button_compute_text = "Compute layers";
   bool button_compute_pressed = false;
   Color button_compute_color = LIGHTGRAY;
 
-  Rectangle button_reset = {
-    .x = SCREEN_WIDTH - 75,
-    .y = SCREEN_HEIGHT - font_size * 2,
-    .width = 75,
-    .height = font_size * 2
-  };
   char *button_reset_text = "Reset";
 
   SetTraceLogLevel(LOG_WARNING);
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Convex Layers");
-  SetTargetFPS(60);
+  SetWindowState(FLAG_WINDOW_RESIZABLE);
+
+  float font_size = 25;
+
+  char *font_path = "./thirdparty/assets/fonts/JetBrainsMono-Regular.ttf";
+  Font font = LoadFontEx(font_path, font_size, NULL, 0);
 
   while (!WindowShouldClose()) {
+    // Compute layers button
+    Vector2 button_compute_text_size = MeasureTextEx(font, button_compute_text, font_size, 0);
+    float padding_compute = button_compute_text_size.y * 0.5f;
+    Rectangle button_compute = {
+      .x = 0,
+      .y = GetScreenHeight() - (button_compute_text_size.y + padding_compute*2),
+      .width = button_compute_text_size.x + padding_compute*2,
+      .height = button_compute_text_size.y + padding_compute*2,
+    };
     // Change color of button
     button_compute_color = button_compute_pressed ? RED : LIGHTGRAY;
+
+    // Reset button
+    Vector2 button_reset_text_size = MeasureTextEx(font, button_reset_text, font_size, 0);
+    float padding_reset = button_reset_text_size.y * 0.5f;
+    Rectangle button_reset = {
+      .x = GetScreenWidth() - (button_reset_text_size.x + padding_reset*2),
+      .y = GetScreenHeight() - (button_reset_text_size.y + padding_reset*2),
+      .width = button_reset_text_size.x + padding_reset*2,
+      .height = button_reset_text_size.y + padding_reset*2,
+    };
 
     // Add points
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !CheckCollisionPointRec(GetMousePosition(), button_compute) && !CheckCollisionPointRec(GetMousePosition(), button_reset))
@@ -187,14 +196,22 @@ int main(void)
       if (CheckCollisionPointRec(GetMousePosition(), button_compute) && points.count > 2) {
         DrawRectangleLinesEx(button_compute, 5.0, BLACK);
       }
-      DrawText(button_compute_text, button_compute.x + font_size / 2, button_compute.y + font_size / 2, font_size, BLACK);
+      Vector2 button_compute_text_position = {
+        .x = button_compute.x + padding_compute,
+        .y = button_compute.y + padding_compute,
+      };
+      DrawTextEx(font, button_compute_text, button_compute_text_position, font_size, 0, BLACK);
 
       // Draw button_reset
       DrawRectangleRec(button_reset, LIGHTGRAY);
       if (CheckCollisionPointRec(GetMousePosition(), button_reset) && points.count > 0) {
         DrawRectangleLinesEx(button_reset, 5.0, BLACK);
       }
-      DrawText(button_reset_text, button_reset.x + font_size / 2, button_reset.y + font_size / 2, font_size, BLACK);
+      Vector2 button_reset_text_position = {
+        .x = button_reset.x + padding_reset,
+        .y = button_reset.y + padding_reset,
+      };
+      DrawTextEx(font, button_reset_text, button_reset_text_position, font_size, 0, BLACK);
 
       // Draw points
       for(size_t i = 0; i < points.count; i++) {
@@ -217,6 +234,7 @@ int main(void)
     EndDrawing();
   }
 
+  UnloadFont(font);
   CloseWindow();
 
   // Free dynamic arrays
